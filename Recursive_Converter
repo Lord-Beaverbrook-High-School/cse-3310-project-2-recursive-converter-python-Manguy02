@@ -1,0 +1,66 @@
+# This is a global var used for the binary function
+new_num = " "
+# This is a dictionary for the hexadecimal function it works by assigning nums values
+conversion_table = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7',
+                    8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
+# This is a code a found to easily reverse the table
+# This could also just be done by hand like the table above
+r_conversion_table = {v: k for k, v in conversion_table.items()}
+
+
+# Input is the num to be converted
+# Then it tales the num then divides it by two
+# It then appends the remainder
+# Goes until n is not greater than 1
+# Output is a global var called new num
+def dec_to_bin(num):
+    if num > 1:
+        dec_to_bin(num // 2)
+    global new_num
+    new_num += str(num % 2)
+
+
+# Input is num to be converted
+# Num is appended by 16 and this value is the remainder
+# Then num is divided by 16 and added back into the function
+# The reminder is set by the dictionary
+# Output is hexadecimal num
+
+def decimal_to_hexadecimal(num):
+    if num <= 0:
+        return ''
+    remainder = num % 16
+    return decimal_to_hexadecimal(num//16) + conversion_table[remainder]
+
+
+# Input num to convert
+# Num is appended by ten
+# Multiply by 2 * function again but num divided by ten
+# Output decimal num
+def binary_to_decimal(num):
+    if num == 0:
+        return 0
+    else:
+        return (num % 10) + (2 * binary_to_decimal(num//10))
+
+
+# Input num(str) to convert
+# Because this is string it works by taking the first char of the string
+# Then it converts the first char to a reverse library used in the dec to hexa code
+# It finds the power by taking the length - 1
+# Then it moves the num to its place by using the power
+# Removes the first char then calls upon itself until str does not exist
+def hexadecimal_to_binary(num_str):
+    if not num_str:
+        return 0
+    else:
+        current_value = r_conversion_table[num_str[0].upper()]
+        power = len(num_str) - 1
+        return (current_value * (16 ** power)) + hexadecimal_to_binary(num_str[1:])
+
+
+dec_to_bin(5511)
+print(new_num)
+print(decimal_to_hexadecimal(160))
+print(binary_to_decimal(11101))
+print(hexadecimal_to_binary("1C2A3"))
